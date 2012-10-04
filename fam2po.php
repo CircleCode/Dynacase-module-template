@@ -3,11 +3,11 @@
 /**
  * Convert OpenDocument Spreadsheet to csv (semicolon)
  *
- * @author Anakeen 2000 
+ * @author Anakeen 2000
  * @version $Id: fam2po.php,v 1.2 2010-03-11 12:31:46 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package DCP
- * @subpackage 
+ * @subpackage
  */
 define("SEPCHAR", ';');
 define("ALTSEPCHAR", ' --- ');
@@ -23,14 +23,27 @@ for ($i = 1; $i < count($argv); $i++) {
     debugPrompt("Processing file " . $argv[$i]);
     $pf = pathinfo($argv[$i]);
     if (file_exists($argv[$i])) {
-        debugPrompt("  --- csv extraction");
-        $csvfile = $argv[$i] . ".csv";
-        ods2csv($argv[$i], $csvfile);
+        if(isset($pf['extension'])){
+            switch($pf['extension']){
+                case 'ods':
+                    debugPrompt("  --- csv extraction");
+                    $csvfile = $argv[$i] . ".csv";
+                    ods2csv($argv[$i], $csvfile);
 
-        if ($csvfile) {
-            makePo($csvfile);
+                    if ($csvfile) {
+                        makePo($csvfile);
+                    }
+                    unlink($csvfile);
+                    break;
+                case 'csv':
+                    makePo($argv[$i]);
+                    break;
+                default:
+                    debugPrompt($argv[$i]. " has an unknown extension, skipping it.");
+            }
+        } else {
+            debugPrompt($argv[$i]. " has no extension, skipping it.");
         }
-        unlink($csvfile);
     } else {
         debugPrompt("Can't access file " . $argv[$i]);
     }

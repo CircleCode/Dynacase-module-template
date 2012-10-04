@@ -7,10 +7,11 @@ import os.path
 import shutil
 import fileinput
 
-sys.path.append(os.path.join(os.path.dirname(__file__), 'devTools'))
-
+devToolsDir = os.path.join(os.path.dirname(__file__), 'devTools')
+sys.path.append(devToolsDir)
 from utils import copytree
 from addApplication import addApplication
+sys.path.remove(devToolsDir)
 
 from tempfile import mkdtemp
 from string import Template
