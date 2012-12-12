@@ -8,7 +8,7 @@ appname = @APPNAME@
 TAR = tar
 GZIP_ENV = --best
 
-export pubdir utildir appname applib PACKAGE
+export targetdir PACKAGE
 
 SUBDIR= Apps Families Actions Scripts Images
 
